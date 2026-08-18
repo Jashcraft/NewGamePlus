@@ -57,6 +57,10 @@ Town
 
 This will get revised — treat as a starting skeleton, not gospel.
 
+**Movement decision (Ticket #3):** Free pixel movement, not grid-locked. Position is stored in pixels (world space, same units as `Tilemap.TileSize`), not tile coordinates — matches the Zelda-style exploration feel from the vision doc over classic Pokémon step movement, and keeps the door open for a real-time-adjacent feel if player-direct combat ever wants it. Collision resolves the X and Y axes independently each move so the player slides along walls instead of sticking dead on diagonal input into a corner.
+
+**Water walkability (Ticket #3):** Water tiles block movement, same as walls — no swim ability exists yet, consistent with the classic critter-game convention of gating water crossing behind a later unlock.
+
 ## Milestone Roadmap (vertical slice target)
 
 **Goal: 1 town, a few critters, prove the core loop (explore → encounter → battle → outcome) works end to end.**
@@ -184,6 +188,6 @@ Going forward, tickets that touch testable logic will include explicit test task
 | #1 | Project scaffold | DONE |
 | #1.5 | xUnit test project setup | DONE |
 | #2 | Tilemap renderer + camera | DONE (see `Tickets/ticket-02-tilemap-camera.md`) |
-| #3 | Player entity, movement & collision | See `ticket-03-player-movement.md` |
+| #3 | Player entity, movement & collision | DONE (see `Tickets/ticket-03-player-movement.md`) |
 
 _Tickets #0, #1, and #1.5 are kept above since they're already complete/short. Starting with #2, each ticket lives in its own file (`ticket-NN-short-name.md`) to keep this doc from ballooning. Update this table as tickets are picked up/completed._
