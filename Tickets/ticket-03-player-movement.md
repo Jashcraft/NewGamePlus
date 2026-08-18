@@ -31,3 +31,7 @@ This ticket follows TDD for the logic pieces (collision checks, movement resolut
 **Out of scope for this ticket:** animated sprites, diagonal-movement edge polish beyond "doesn't crash or clip," NPCs, any state stack work (that's M4), any battle/dialogue systems.
 
 **Definition of done:** `dotnet test` passes including new tests. Running the project shows a player that moves via arrow keys/WASD, is blocked by wall tiles (including the map border), and the camera follows the player smoothly.
+
+---
+
+**STATUS: DONE.** `Player` (Entities/Player.cs) built with free pixel movement (design decision confirmed with Jackal, recorded in `game-architecture.md`); water tiles decided to block movement, same as walls, also recorded there. `TileCollision` and `MovementResolver` TDD'd first (10 new tests, 20 total passing), with axis-separated resolution so diagonal movement slides along walls instead of sticking. Ticket #2's debug camera pan removed entirely; camera now tracks `Player.Position` every frame. Manually verified via screenshot capture (driving the same production movement code with synthetic input, since this dev environment can't simulate real keypresses): rendering, camera-follow, open-grass movement, water-edge collision, and border-wall collision all confirmed working. Branch: `feature/player-movement`.
