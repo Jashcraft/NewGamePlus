@@ -63,6 +63,10 @@ This will get revised — treat as a starting skeleton, not gospel.
 
 **State layering decision (Ticket #4):** Only the top state on the `StateStack` receives `Update` — a paused state (e.g. Overworld behind an open Dialogue) fully freezes rather than continuing to simulate. Every state still `Draw`s, bottom to top, so a paused Overworld renders as a static backdrop behind whatever's on top of it. This was the ticket's own suggested default; agreed with it rather than diverging.
 
+**Interaction range decision (Ticket #5):** `InteractionChecker.InteractionRange` is 60px (`Tilemap.TileSize * 1.25`) — roughly one full tile of reach plus a small buffer, since free-pixel movement means the player won't land pixel-perfectly adjacent to an NPC's tile. Facing is checked as a cardinal match (dominant-axis direction from player to NPC must equal `Player.Facing`), not an angular cone, consistent with the 4-directional `Direction` enum already in place.
+
+**Dialogue close behavior (Ticket #5):** Pressing Enter while the last line is showing closes the dialogue immediately, rather than requiring an extra press after the last line is shown. `DialogueProgress.Advance()` returning false (no more lines) is the direct signal `DialogueState` uses to pop itself.
+
 ## Milestone Roadmap (vertical slice target)
 
 **Goal: 1 town, a few critters, prove the core loop (explore → encounter → battle → outcome) works end to end.**
