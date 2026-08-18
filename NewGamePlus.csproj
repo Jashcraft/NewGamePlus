@@ -12,6 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- NewGamePlus.Tests is a subdirectory of this project's directory, so it's
+         otherwise picked up by this project's own default **/*.cs glob too. -->
     <Compile Remove="NewGamePlus.Tests/**" />
   </ItemGroup>
 
