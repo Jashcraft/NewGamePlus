@@ -189,5 +189,6 @@ Going forward, tickets that touch testable logic will include explicit test task
 | #1.5 | xUnit test project setup | DONE |
 | #2 | Tilemap renderer + camera | DONE (see `Tickets/ticket-02-tilemap-camera.md`) |
 | #3 | Player entity, movement & collision | DONE (see `Tickets/ticket-03-player-movement.md`) |
+| #4 | State stack (Overworld/Battle/Dialogue/Menu) | See `ticket-04-state-stack.md` |
 
 _Tickets #0, #1, and #1.5 are kept above since they're already complete/short. Starting with #2, each ticket lives in its own file (`ticket-NN-short-name.md`) to keep this doc from ballooning. Update this table as tickets are picked up/completed._
