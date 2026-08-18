@@ -192,5 +192,7 @@ Going forward, tickets that touch testable logic will include explicit test task
 | #2 | Tilemap renderer + camera | DONE (see `Tickets/ticket-02-tilemap-camera.md`) |
 | #3 | Player entity, movement & collision | DONE (see `Tickets/ticket-03-player-movement.md`) |
 | #4 | State stack (Overworld/Battle/Dialogue/Menu) | DONE (see `Tickets/ticket-04-state-stack.md`) |
+| #4b | Fix missed key presses (input polling bug) | DONE (see `Tickets/ticket-04b-input-polling-fix.md`) |
+| #5 | NPC interaction & real dialogue | See `ticket-05-npc-dialogue.md` |
 
 _Tickets #0, #1, and #1.5 are kept above since they're already complete/short. Starting with #2, each ticket lives in its own file (`ticket-NN-short-name.md`) to keep this doc from ballooning. Update this table as tickets are picked up/completed._
