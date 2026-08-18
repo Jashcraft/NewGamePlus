@@ -1,4 +1,5 @@
 using NewGamePlus.Core;
+using Raylib_cs;
 
 namespace NewGamePlus.Tests.Core;
 
@@ -23,7 +24,7 @@ public class StateStackTests
         public void OnEnter() => EnterCount++;
         public void OnExit() => ExitCount++;
 
-        public void Update(float dt)
+        public void Update(float dt, InputSnapshot input)
         {
             UpdateCount++;
             _callLog?.Add($"{_name}.Update");
@@ -35,6 +36,8 @@ public class StateStackTests
             _callLog?.Add($"{_name}.Draw");
         }
     }
+
+    private static readonly InputSnapshot EmptyInput = new(new HashSet<KeyboardKey>());
 
     [Fact]
     public void Push_CallsOnEnter_AndBecomesCurrent()
@@ -83,7 +86,7 @@ public class StateStackTests
         stack.Push(bottom);
         stack.Push(top);
 
-        stack.Update(0.016f);
+        stack.Update(0.016f, EmptyInput);
 
         Assert.Equal(0, bottom.UpdateCount);
         Assert.Equal(1, top.UpdateCount);
@@ -104,5 +107,17 @@ public class StateStackTests
         Assert.Equal(1, bottom.DrawCount);
         Assert.Equal(1, top.DrawCount);
         Assert.Equal(new[] { "bottom.Draw", "top.Draw" }, callLog);
+    }
+
+    [Fact]
+    public void Update_ConsumesInputSnapshot_SoARepeatUpdateInTheSameRealFrameDoesNotSeeItAgain()
+    {
+        var stack = new StateStack();
+        stack.Push(new FakeGameState());
+        var input = new InputSnapshot(new HashSet<KeyboardKey> { KeyboardKey.E });
+
+        stack.Update(0.016f, input);
+
+        Assert.False(input.WasPressed(KeyboardKey.E));
     }
 }

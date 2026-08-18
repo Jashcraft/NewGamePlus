@@ -25,9 +25,9 @@ public class DialogueState : IGameState
     {
     }
 
-    public void Update(float dt)
+    public void Update(float dt, InputSnapshot input)
     {
-        if (Raylib.IsKeyPressed(KeyboardKey.Enter))
+        if (input.WasPressed(KeyboardKey.Enter))
         {
             _stack.Pop();
         }

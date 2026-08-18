@@ -35,14 +35,14 @@ public class OverworldState : IGameState
     {
     }
 
-    public void Update(float dt)
+    public void Update(float dt, InputSnapshot input)
     {
         _player.Update(dt, _map);
         _camera.Target = _player.Position;
 
         // Throwaway trigger to prove the state stack push/pop works
         // end-to-end. Real NPC-triggered dialogue is Ticket #5.
-        if (Raylib.IsKeyPressed(KeyboardKey.E))
+        if (input.WasPressed(KeyboardKey.E))
         {
             _stack.Push(new DialogueState(_stack));
         }

@@ -27,9 +27,13 @@ public class StateStack
         top.OnExit();
     }
 
-    public void Update(float dt)
+    public void Update(float dt, InputSnapshot input)
     {
-        Current?.Update(dt);
+        Current?.Update(dt, input);
+
+        // A single real-frame key press can drive multiple Update() calls
+        // (accumulator catch-up), so the snapshot is only actionable once.
+        input.Consume();
     }
 
     public void Draw()

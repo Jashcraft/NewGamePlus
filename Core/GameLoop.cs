@@ -20,15 +20,22 @@ public static class GameLoop
         s_stack = new StateStack();
         s_stack.Push(new OverworldState(s_stack));
 
+        // One persistent snapshot for the whole run - a press latches in
+        // on whichever real frame it happens and carries forward until an
+        // Update() call actually consumes it, even if that's several real
+        // frames later (see InputSnapshot's comment for why that matters).
+        var input = new InputSnapshot();
+
         double accumulator = 0.0;
 
         while (!Raylib.WindowShouldClose())
         {
             accumulator += Raylib.GetFrameTime();
+            input.CaptureFrame(KeyboardKey.E, KeyboardKey.Enter);
 
             while (accumulator >= FixedTimestep)
             {
-                s_stack.Update((float)FixedTimestep);
+                s_stack.Update((float)FixedTimestep, input);
                 accumulator -= FixedTimestep;
             }
 
