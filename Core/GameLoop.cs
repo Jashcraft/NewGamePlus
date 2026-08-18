@@ -1,6 +1,4 @@
-using System.Numerics;
-using NewGamePlus.Entities;
-using NewGamePlus.World;
+using NewGamePlus.States;
 using Raylib_cs;
 
 namespace NewGamePlus.Core;
@@ -13,33 +11,31 @@ public static class GameLoop
 
     private const double FixedTimestep = 1.0 / 60.0;
 
-    private static Tilemap s_testMap = null!;
-    private static Player s_player = null!;
-    private static Camera2D s_camera;
+    private static StateStack s_stack = null!;
 
     public static void Run()
     {
         Raylib.InitWindow(ScreenWidth, ScreenHeight, WindowTitle);
 
-        s_testMap = Tilemap.CreateTestMap();
-        s_player = new Player(new Vector2(2 * Tilemap.TileSize + Tilemap.TileSize / 2f, 2 * Tilemap.TileSize + Tilemap.TileSize / 2f));
-        s_camera = new Camera2D
-        {
-            Target = s_player.Position,
-            Offset = new Vector2(ScreenWidth / 2f, ScreenHeight / 2f),
-            Rotation = 0f,
-            Zoom = 1f,
-        };
+        s_stack = new StateStack();
+        s_stack.Push(new OverworldState(s_stack));
+
+        // One persistent snapshot for the whole run - a press latches in
+        // on whichever real frame it happens and carries forward until an
+        // Update() call actually consumes it, even if that's several real
+        // frames later (see InputSnapshot's comment for why that matters).
+        var input = new InputSnapshot();
 
         double accumulator = 0.0;
 
         while (!Raylib.WindowShouldClose())
         {
             accumulator += Raylib.GetFrameTime();
+            input.CaptureFrame(KeyboardKey.E, KeyboardKey.Enter);
 
             while (accumulator >= FixedTimestep)
             {
-                Update((float)FixedTimestep);
+                s_stack.Update((float)FixedTimestep, input);
                 accumulator -= FixedTimestep;
             }
 
@@ -49,24 +45,10 @@ public static class GameLoop
         Raylib.CloseWindow();
     }
 
-    private static void Update(float dt)
-    {
-        // State stack update goes here once States are implemented (M4).
-
-        s_player.Update(dt, s_testMap);
-        s_camera.Target = s_player.Position;
-    }
-
     private static void Draw()
     {
         Raylib.BeginDrawing();
-        Raylib.ClearBackground(Color.Black);
-
-        Raylib.BeginMode2D(s_camera);
-        TilemapRenderer.Draw(s_testMap);
-        s_player.Draw();
-        Raylib.EndMode2D();
-
+        s_stack.Draw();
         Raylib.EndDrawing();
     }
 }
