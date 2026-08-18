@@ -1,4 +1,5 @@
 using System.Numerics;
+using NewGamePlus.Entities;
 using NewGamePlus.World;
 using Raylib_cs;
 
@@ -10,12 +11,10 @@ public static class GameLoop
     public const int ScreenHeight = 600;
     public const string WindowTitle = "(Subject To Change Later) DarkWorld";
 
-    // Throwaway until a real player entity drives the camera (M3).
-    private const float DebugCameraPanSpeed = 200f;
-
     private const double FixedTimestep = 1.0 / 60.0;
 
     private static Tilemap s_testMap = null!;
+    private static Player s_player = null!;
     private static Camera2D s_camera;
 
     public static void Run()
@@ -23,9 +22,10 @@ public static class GameLoop
         Raylib.InitWindow(ScreenWidth, ScreenHeight, WindowTitle);
 
         s_testMap = Tilemap.CreateTestMap();
+        s_player = new Player(new Vector2(2 * Tilemap.TileSize + Tilemap.TileSize / 2f, 2 * Tilemap.TileSize + Tilemap.TileSize / 2f));
         s_camera = new Camera2D
         {
-            Target = Vector2.Zero,
+            Target = s_player.Position,
             Offset = new Vector2(ScreenWidth / 2f, ScreenHeight / 2f),
             Rotation = 0f,
             Zoom = 1f,
@@ -53,15 +53,8 @@ public static class GameLoop
     {
         // State stack update goes here once States are implemented (M4).
 
-        // Temporary arrow-key camera pan, just to prove BeginMode2D/EndMode2D
-        // panning works. Replace with real player-driven camera in M3.
-        var pan = Vector2.Zero;
-        if (Raylib.IsKeyDown(KeyboardKey.Right)) pan.X += 1f;
-        if (Raylib.IsKeyDown(KeyboardKey.Left)) pan.X -= 1f;
-        if (Raylib.IsKeyDown(KeyboardKey.Down)) pan.Y += 1f;
-        if (Raylib.IsKeyDown(KeyboardKey.Up)) pan.Y -= 1f;
-
-        s_camera.Target += pan * DebugCameraPanSpeed * dt;
+        s_player.Update(dt, s_testMap);
+        s_camera.Target = s_player.Position;
     }
 
     private static void Draw()
@@ -71,6 +64,7 @@ public static class GameLoop
 
         Raylib.BeginMode2D(s_camera);
         TilemapRenderer.Draw(s_testMap);
+        s_player.Draw();
         Raylib.EndMode2D();
 
         Raylib.EndDrawing();

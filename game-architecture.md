@@ -57,6 +57,10 @@ Town
 
 This will get revised — treat as a starting skeleton, not gospel.
 
+**Movement decision (Ticket #3):** Free pixel movement, not grid-locked. Position is stored in pixels (world space, same units as `Tilemap.TileSize`), not tile coordinates — matches the Zelda-style exploration feel from the vision doc over classic Pokémon step movement, and keeps the door open for a real-time-adjacent feel if player-direct combat ever wants it. Collision resolves the X and Y axes independently each move so the player slides along walls instead of sticking dead on diagonal input into a corner.
+
+**Water walkability (Ticket #3):** Water tiles block movement, same as walls — no swim ability exists yet, consistent with the classic critter-game convention of gating water crossing behind a later unlock.
+
 ## Milestone Roadmap (vertical slice target)
 
 **Goal: 1 town, a few critters, prove the core loop (explore → encounter → battle → outcome) works end to end.**

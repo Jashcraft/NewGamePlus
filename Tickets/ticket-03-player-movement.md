@@ -1,6 +1,6 @@
-# Ticket #3 (for Code Claude): Player Entity, Movement & Collision
+# Ticket #3: Player Entity, Movement & Collision
 
-**Branch suggestion:** `feature/player-movement`
+
 
 **Goal:** A player entity that moves around the tilemap with real input (replacing the debug arrow-key camera pan from Ticket #2), blocked by walls via tile-based collision. The camera now follows the player instead of being panned directly.
 
