@@ -14,3 +14,9 @@
 5. Manually re-verify: E reliably opens the dialogue box on the first press, Enter reliably closes it on the first press, with no missed presses across at least ~10 repeated open/close cycles.
 
 **Definition of done:** `dotnet test` still passes with updated tests. E and Enter reliably trigger on the first press, every time, in manual testing.
+
+---
+
+**STATUS: DONE.** `InputSnapshot` (Core/InputSnapshot.cs) latches key presses across real frames instead of a fresh per-frame snapshot: `GameLoop` holds one persistent instance for the whole run and merges newly-pressed keys into it every real frame via `CaptureFrame`; `StateStack.Update` consumes (clears) it immediately after routing to the current state, so a press survives however many "quiet" frames it takes to reach the next `Update()` call but can't double-trigger within one real frame's accumulator catch-up. `IGameState.Update` now takes the injected snapshot; states no longer call `Raylib.IsKeyPressed` directly. 4 new tests (29 total), all passing.
+
+Manually verified the actual bug, not just a regression: temporarily force-latched presses on real frames deliberately unaligned with any fixed-tick boundary, logged stack-depth transitions, and confirmed each forced press triggered exactly once — landing on a later real frame once an `Update()` call finally ran — across 3 full open/close cycles, no drops, no double-triggers. Debug code reverted before commit.
