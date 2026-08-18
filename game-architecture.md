@@ -61,6 +61,8 @@ This will get revised — treat as a starting skeleton, not gospel.
 
 **Water walkability (Ticket #3):** Water tiles block movement, same as walls — no swim ability exists yet, consistent with the classic critter-game convention of gating water crossing behind a later unlock.
 
+**State layering decision (Ticket #4):** Only the top state on the `StateStack` receives `Update` — a paused state (e.g. Overworld behind an open Dialogue) fully freezes rather than continuing to simulate. Every state still `Draw`s, bottom to top, so a paused Overworld renders as a static backdrop behind whatever's on top of it. This was the ticket's own suggested default; agreed with it rather than diverging.
+
 ## Milestone Roadmap (vertical slice target)
 
 **Goal: 1 town, a few critters, prove the core loop (explore → encounter → battle → outcome) works end to end.**
@@ -189,6 +191,6 @@ Going forward, tickets that touch testable logic will include explicit test task
 | #1.5 | xUnit test project setup | DONE |
 | #2 | Tilemap renderer + camera | DONE (see `Tickets/ticket-02-tilemap-camera.md`) |
 | #3 | Player entity, movement & collision | DONE (see `Tickets/ticket-03-player-movement.md`) |
-| #4 | State stack (Overworld/Battle/Dialogue/Menu) | See `ticket-04-state-stack.md` |
+| #4 | State stack (Overworld/Battle/Dialogue/Menu) | DONE (see `Tickets/ticket-04-state-stack.md`) |
 
 _Tickets #0, #1, and #1.5 are kept above since they're already complete/short. Starting with #2, each ticket lives in its own file (`ticket-NN-short-name.md`) to keep this doc from ballooning. Update this table as tickets are picked up/completed._

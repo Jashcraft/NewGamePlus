@@ -28,3 +28,7 @@ This ticket follows TDD for the stack mechanics themselves (push/pop/peek/update
 **Out of scope for this ticket:** real dialogue content/branching, NPC interaction triggers, the Battle state (that's a later milestone — M5/M6 per the roadmap), Menu state content.
 
 **Definition of done:** `dotnet test` passes including new state-stack tests. `GameLoop` no longer directly references `Tilemap`/`Player` — it only drives a `StateStack`. Running the project demonstrates a working push/pop cycle via the temporary dialogue-placeholder trigger.
+
+---
+
+**STATUS: DONE.** `IGameState` + a real `StateStack` (Core/) TDD'd first with a fake-state test double (5 new tests, 25 total passing): only the top state `Update`s, every state `Draw`s bottom-to-top so a paused Overworld renders frozen behind an overlay, popping an empty stack is a no-op. Agreed with the ticket's suggested default rather than diverging; decision recorded in `game-architecture.md`. `OverworldState` now owns the tilemap/player/camera that used to live in `GameLoop`; `DialogueState` is the throwaway placeholder (E pushes it, Enter pops it) proving the mechanics work end-to-end. `GameLoop` only owns a `StateStack` now. Manually verified via screenshot capture (temporary debug input override, reverted before commit, since this environment can't simulate real keypresses): overworld freezes exactly at push time with the dialogue box drawn over the still-visible frozen backdrop, and resumes correctly after pop. Branch: `feature/state-stack`.
