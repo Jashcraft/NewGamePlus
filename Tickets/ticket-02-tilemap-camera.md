@@ -27,3 +27,7 @@ This ticket follows TDD for the logic pieces: write the test first (it should fa
 **Out of scope for this ticket:** player entity, real movement/input system, collision, loading maps from file/Tiled, real art/textures.
 
 **Definition of done:** `dotnet test` passes including new tilemap tests. Running the project shows a colored grid of tiles larger than the screen, and the camera can be confirmed to pan across it (temporary test-key movement is fine to prove this, doesn't need to be production input code).
+
+---
+
+**STATUS: DONE.** `Tilemap` (20x15 grid, 48px tiles → 960x720, larger than the 800x600 screen) built TDD-first, 8 new tests passing (10 total). `TilemapRenderer` draws placeholder colored rectangles; `GameLoop` wires a raylib `Camera2D` via `BeginMode2D`/`EndMode2D` with throwaway arrow-key panning. Manually verified via screenshot capture (target at origin, then panned) that tile colors/positions and camera panning both work correctly. No camera clamping/offset logic existed to unit test this round, per the ticket's own carveout. Branch: `feature/tilemap-camera`.
