@@ -31,3 +31,9 @@ This ticket follows TDD for the interaction-detection and dialogue-advancement l
 **Out of scope for this ticket:** multiple NPCs with different behavior, branching dialogue based on faction standing (that's later, per the architecture doc's faction system notes), NPC sprites/animation, NPC movement/AI.
 
 **Definition of done:** `dotnet test` passes including new tests. Running the project shows a real NPC that only responds to interaction when the player is near and facing it, with real multi-line dialogue that advances and closes correctly.
+
+---
+
+**STATUS: DONE.** `InteractionChecker.CanInteract` (60px range, cardinal-facing match) and `DialogueProgress` (line index + Advance() signaling close) both TDD'd first, 13 new tests (42 total) passing. `Npc` placed on the test map; `OverworldState` only pushes `DialogueState` when a facing/range check passes, handing it the NPC's real lines. Enter on the last line closes immediately rather than needing an extra press. Both design decisions (range/facing math, close-on-last-line behavior) recorded in `game-architecture.md`.
+
+Manually verified with a tick-gated debug harness (not real-frame-number timing, which proved unreliable since the first fixed tick can fire earlier than a real-frame count would predict): wrong-facing E correctly finds no target, corrected facing opens dialogue on the real first line, Enter advances to the exact second line, a final Enter closes it - confirmed via console log and screenshots. Debug code fully reverted before commit. Branch: `feature/npc-dialogue`.
